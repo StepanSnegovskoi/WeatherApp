@@ -12,6 +12,7 @@ ksp = "2.1.0-1.0.29"
 mvikotlin = "3.2.1"
 decompose = "3.2.2"
 serialization = "1.8.0"
+dagger = "2.48.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -34,6 +35,7 @@ mvikotlin-coroutines = { group = "com.arkivanov.mvikotlin", name = "mvikotlin-ex
 decompose-core = { group = "com.arkivanov.decompose", name = "decompose", version.ref = "decompose" }
 decompose-extensions = { group = "com.arkivanov.decompose", name = "extensions-compose", version.ref = "decompose" }
 serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization" }
+dagger-core = { group = "com.google.dagger", name = "dagger", version.ref = "dagger" }
 
 
 [plugins]
