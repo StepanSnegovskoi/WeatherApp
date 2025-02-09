@@ -57,6 +57,10 @@ dependencies {
     // Dagger
     implementation(libs.dagger.core)
     ksp(libs.dagger.compiler)
+    
+    // Retrofit
+    implementation(libs.retrofit.core)
+
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
