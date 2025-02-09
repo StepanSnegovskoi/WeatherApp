@@ -36,6 +36,7 @@ decompose-core = { group = "com.arkivanov.decompose", name = "decompose", versio
 decompose-extensions = { group = "com.arkivanov.decompose", name = "extensions-compose", version.ref = "decompose" }
 serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization" }
 dagger-core = { group = "com.google.dagger", name = "dagger", version.ref = "dagger" }
+dagger-compiler = { group = "com.google.dagger", name = "dagger-compiler", version.ref = "dagger" }
 
 
 [plugins]
