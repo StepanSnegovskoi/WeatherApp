@@ -44,6 +44,7 @@ dependencies {
 
     //MVIKotlin
     implementation(libs.mvikotlin.core)
+    implementation(libs.mvikotlin.main)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
