@@ -2,16 +2,17 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.ksp)
 }
 
 android {
     namespace = "com.example.weatherapp"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.weatherapp"
         minSdk = 26
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -40,6 +41,36 @@ android {
 }
 
 dependencies {
+
+    // MVIKotlin
+    implementation(libs.mvikotlin.core)
+    implementation(libs.mvikotlin.main)
+    implementation(libs.mvikotlin.coroutines)
+
+    // Decompose
+    implementation(libs.decompose.core)
+    implementation(libs.decompose.extensions)
+
+    // Serialization
+    implementation(libs.serialization)
+
+    // Dagger
+    implementation(libs.dagger.core)
+    ksp(libs.dagger.compiler)
+
+    // Retrofit
+    implementation(libs.retrofit.core)
+    implementation(libs.retrofit.converter)
+
+    // Room
+    implementation(libs.room.core)
+    ksp(libs.room.compiler)
+
+    // Glide
+    implementation(libs.glide)
+
+    // Icons
+    implementation(libs.icons)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
