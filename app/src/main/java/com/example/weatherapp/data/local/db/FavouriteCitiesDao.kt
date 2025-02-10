@@ -20,6 +20,6 @@ interface FavouriteCitiesDao {
     suspend fun addCityToFavourite(cityDbModel: CityDbModel)
 
     @Query("DELETE FROM favourite_cities WHERE id =:cityId")
-    suspend fun addCityToFavourite(cityId: Int)
+    suspend fun removeCityFromFavourite(cityId: Int)
 
 }
