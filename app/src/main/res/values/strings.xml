@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">WeatherApp</string>
+    <string name="button_add_favourite">Добавить в избранное</string>
+    <string name="search">Поиск</string>
 </resources>
