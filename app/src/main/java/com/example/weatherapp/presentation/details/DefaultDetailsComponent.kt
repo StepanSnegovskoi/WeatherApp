@@ -6,17 +6,19 @@ import com.arkivanov.mvikotlin.extensions.coroutines.labels
 import com.arkivanov.mvikotlin.extensions.coroutines.stateFlow
 import com.example.weatherapp.domain.entity.City
 import com.example.weatherapp.presentation.extensions.componentScope
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import javax.inject.Inject
 
-class DefaultDetailsComponent @Inject constructor(
+class DefaultDetailsComponent @AssistedInject constructor(
     private val storeFactory: DetailsStoreFactory,
-    private val onBackClicked: () -> Unit,
-    private val city: City,
-    componentContext: ComponentContext
+    @Assisted("onBackClicked") private val onBackClicked: () -> Unit,
+    @Assisted("city") private val city: City,
+    @Assisted("componentContext") componentContext: ComponentContext
 ) : DetailsComponent, ComponentContext by componentContext {
 
     private val store = instanceKeeper.getStore { storeFactory.create(city) }
@@ -40,5 +42,15 @@ class DefaultDetailsComponent @Inject constructor(
 
     override fun onClickFavouriteStatus() {
         store.accept(DetailsStore.Intent.ClickChangeFavouriteStatus)
+    }
+
+    @AssistedFactory
+    interface Factory {
+
+        fun create(
+            @Assisted("onBackClicked") onBackClicked: () -> Unit,
+            @Assisted("city") city: City,
+            @Assisted("componentContext") componentContext: ComponentContext
+        ): DefaultDetailsComponent
     }
 }
