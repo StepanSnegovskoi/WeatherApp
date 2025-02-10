@@ -6,22 +6,23 @@ import com.arkivanov.mvikotlin.extensions.coroutines.labels
 import com.arkivanov.mvikotlin.extensions.coroutines.stateFlow
 import com.example.weatherapp.domain.entity.City
 import com.example.weatherapp.presentation.extensions.componentScope
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import javax.inject.Inject
 
-class DefaultFavouriteComponent @Inject constructor(
+class DefaultFavouriteComponent @AssistedInject constructor(
     private val favouriteStoreFactory: FavouriteStoreFactory,
-    private val onCityItemClicked: (City) -> Unit,
-    private val onSearchClicked: () -> Unit,
-    private val onAddToFavouriteClicked: () -> Unit,
-    componentContext: ComponentContext
+    @Assisted("onCityItemClicked") private val onCityItemClicked: (City) -> Unit,
+    @Assisted("onSearchClicked") private val onSearchClicked: () -> Unit,
+    @Assisted("onAddToFavouriteClicked") private val onAddToFavouriteClicked: () -> Unit,
+    @Assisted("componentContext") componentContext: ComponentContext
 ) : FavouriteComponent, ComponentContext by componentContext {
 
     val store = instanceKeeper.getStore { favouriteStoreFactory.create() }
-
 
     init {
         store.labels.onEach {
@@ -55,5 +56,16 @@ class DefaultFavouriteComponent @Inject constructor(
 
     override fun onClickCityItem(city: City) {
         store.accept(FavouriteStore.Intent.ClickCityItem(city))
+    }
+
+    @AssistedFactory
+    interface Factory {
+
+        fun create(
+            @Assisted("onCityItemClicked") onCityItemClicked: (City) -> Unit,
+            @Assisted("onSearchClicked") onSearchClicked: () -> Unit,
+            @Assisted("onAddToFavouriteClicked") onAddToFavouriteClicked: () -> Unit,
+            @Assisted("componentContext") componentContext: ComponentContext
+        ): DefaultFavouriteComponent
     }
 }
