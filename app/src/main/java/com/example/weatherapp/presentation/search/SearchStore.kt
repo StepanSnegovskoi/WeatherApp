@@ -13,6 +13,7 @@ import com.example.weatherapp.domain.usecase.SearchCityUseCase
 import com.example.weatherapp.presentation.search.SearchStore.Intent
 import com.example.weatherapp.presentation.search.SearchStore.Label
 import com.example.weatherapp.presentation.search.SearchStore.State
+import com.example.weatherapp.presentation.search.SearchStoreFactory.Msg
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -98,12 +99,28 @@ class SearchStoreFactory @Inject constructor(
     private inner class ExecutorImpl(private val openReason: OpenReason) :
         CoroutineExecutor<Intent, Action, State, Msg, Label>() {
 
-            private var searchJob: Job? = null
+        private var searchJob: Job? = null
+        private fun loadCities(state: State) {
+            val query = state.searchQuery.ifEmpty {
+                return
+            }
+            searchJob?.cancel()
+            searchJob = scope.launch {
+                dispatch(Msg.LoadingSearchResult)
+                try {
+                    val cities = searchCityUseCase(query)
+                    dispatch(Msg.SearchResultLoaded(cities))
+                } catch (e: Exception) {
+                    dispatch(Msg.SearchResultError)
+                }
+            }
+        }
 
         override fun executeIntent(intent: Intent, getState: () -> State) {
             when (intent) {
                 is Intent.ChangeSearchQuery -> {
                     dispatch(Msg.ChangeSearchQuery(intent.query))
+                    loadCities(state = getState())
                 }
 
                 Intent.ClickBack -> {
@@ -126,16 +143,7 @@ class SearchStoreFactory @Inject constructor(
                 }
 
                 Intent.ClickSearch -> {
-                    searchJob?.cancel()
-                    searchJob = scope.launch {
-                        dispatch(Msg.LoadingSearchResult)
-                        try {
-                            val cities = searchCityUseCase(getState().searchQuery)
-                            dispatch(Msg.SearchResultLoaded(cities))
-                        } catch (e: Exception) {
-                            dispatch(Msg.SearchResultError)
-                        }
-                    }
+                    loadCities(state = getState())
                 }
             }
         }
@@ -145,16 +153,19 @@ class SearchStoreFactory @Inject constructor(
     }
 
     private object ReducerImpl : Reducer<State, Msg> {
-        override fun State.reduce(msg: Msg): State = when(msg){
+        override fun State.reduce(msg: Msg): State = when (msg) {
             is Msg.ChangeSearchQuery -> {
                 copy(searchQuery = msg.query)
             }
+
             Msg.LoadingSearchResult -> {
                 copy(searchState = State.SearchState.Loading)
             }
+
             Msg.SearchResultError -> {
                 copy(searchState = State.SearchState.Error)
             }
+
             is Msg.SearchResultLoaded -> {
                 val searchState = if (msg.cities.isEmpty()) {
                     State.SearchState.EmptyResult
