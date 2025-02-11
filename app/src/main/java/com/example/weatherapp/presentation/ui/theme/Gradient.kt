@@ -35,10 +35,10 @@ data class Gradient(
                 fourthColor = Color(0x8A8433FF),
             ),
             Gradient(
-                firstColor = Color(0xFF5CFF63),
-                secondColor = Color(0xFF25FFFF),
-                thirdColor = Color(0x1600B498),
-                fourthColor = Color(0x00029A14),
+                firstColor = Color(0xFF33D01E),
+                secondColor = Color(0xFF155002),
+                thirdColor = Color(0xFF46D532),
+                fourthColor = Color(0xFF155002),
             ),
             Gradient(
                 firstColor = Color(0xFF379FFF),
