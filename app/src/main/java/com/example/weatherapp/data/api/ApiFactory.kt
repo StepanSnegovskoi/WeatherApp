@@ -4,10 +4,12 @@ import com.example.weatherapp.BuildConfig
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.Locale
 
 object ApiFactory {
 
     private const val KEY_PARAM = "key"
+    private const val LANG_PARAM = "lang"
     private const val BASE_URL = "https://api.weatherapi.com/v1/"
 
     private val okHttpClient = OkHttpClient.Builder()
@@ -15,6 +17,7 @@ object ApiFactory {
             val originalRequest = chain.request()
             val url = originalRequest.url().newBuilder()
                 .addQueryParameter(KEY_PARAM, BuildConfig.WEATHER_API_KEY)
+                .addQueryParameter(LANG_PARAM, Locale.getDefault().language)
                 .build()
             val newRequest = originalRequest.newBuilder()
                 .url(url)
