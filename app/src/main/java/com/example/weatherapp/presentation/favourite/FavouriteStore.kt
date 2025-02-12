@@ -12,6 +12,10 @@ import com.example.weatherapp.domain.usecase.GetFavouriteCitiesUseCase
 import com.example.weatherapp.presentation.favourite.FavouriteStore.Intent
 import com.example.weatherapp.presentation.favourite.FavouriteStore.Label
 import com.example.weatherapp.presentation.favourite.FavouriteStore.State
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -105,12 +109,29 @@ class FavouriteStoreFactory @Inject constructor(
         ) : Msg
     }
 
+    private companion object {
+        private const val FIFTEEN_MINUTES = 15 * 60 * 1000L
+    }
+
     private inner class BootstrapperImpl : CoroutineBootstrapper<Action>() {
+        @OptIn(ExperimentalCoroutinesApi::class)
         override fun invoke() {
 
-            getFavouriteCitiesUseCase().onEach {
-                dispatch(Action.FavouriteCitiesLoaded(it))
-            }.launchIn(scope)
+            val refreshTrigger = flow {
+                while (true) {
+                    emit(Unit)
+                    delay(FIFTEEN_MINUTES)
+                }
+            }
+
+            refreshTrigger
+                .flatMapLatest {
+                    getFavouriteCitiesUseCase()
+                        .onEach { cities ->
+                            dispatch(Action.FavouriteCitiesLoaded(cities))
+                        }
+                }
+                .launchIn(scope)
         }
     }
 
