@@ -1,6 +1,5 @@
 package com.example.weatherapp.presentation.favourite
 
-import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -150,7 +149,6 @@ private fun CityItem(
                         model = weatherState.iconUrl,
                         contentDescription = null
                     )
-                    Log.d("test", cityItem.toString())
                     Text(
                         modifier = Modifier
                             .align(Alignment.BottomStart)
