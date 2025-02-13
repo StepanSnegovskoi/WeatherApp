@@ -110,7 +110,7 @@ class FavouriteStoreFactory @Inject constructor(
     }
 
     private companion object {
-        private const val FIFTEEN_MINUTES = 15 * 60 * 1000L
+        private const val TWO_HOURS = 120_000L
     }
 
     private inner class BootstrapperImpl : CoroutineBootstrapper<Action>() {
@@ -120,7 +120,7 @@ class FavouriteStoreFactory @Inject constructor(
             val refreshTrigger = flow {
                 while (true) {
                     emit(Unit)
-                    delay(FIFTEEN_MINUTES)
+                    delay(TWO_HOURS)
                 }
             }
 
