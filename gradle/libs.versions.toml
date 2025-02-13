@@ -16,7 +16,6 @@ dagger = "2.48.1"
 retrofit = "2.11.0"
 room = "2.6.1"
 glide = "1.0.0-beta01"
-workmanager="2.10.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -47,7 +46,6 @@ room-core = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 glide = { group = "com.github.bumptech.glide", name = "compose", version.ref = "glide" }
 icons = { group = "androidx.compose.material", name = "material-icons-extended" }
-workmanager = { group = "androidx.work", name = "work-runtime-ktx", version.ref="workmanager" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
