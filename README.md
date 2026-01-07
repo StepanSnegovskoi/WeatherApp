@@ -7,6 +7,5 @@
 
 
 ```Kotlin
-    ...
     apikey=YOUR-API-KEY
 ```
